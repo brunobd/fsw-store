@@ -1,6 +1,6 @@
 import { Product } from "@prisma/client";
 
-interface ProductWithFinalPrice extends Product {
+export interface ProductWithFinalPrice extends Product {
   finalPrice: number;
 }
 export const computeProductFinalPrice = (product: Product):ProductWithFinalPrice => {
