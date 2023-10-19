@@ -8,9 +8,9 @@ interface ProductItemProps {
 
 const ProductItem = ({ product }: ProductItemProps) => {
   return (
-    <div className="flex flex-col gap-4 max-w-[170px]">
+    <div className="flex flex-col gap-4">
       <div
-        className="relative bg-accent rounded-lg h-[170px] w-[170px] flex items-center justify-center"
+        className="relative bg-accent rounded-lg h-[170px] w-full flex items-center justify-center"
       >
         {product.discountPercentage > 0 && (
           <Badge className="absolute left-2 top-2 px-2 py-[2px]">
@@ -23,7 +23,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
           height={0}
           width={0}
           sizes="100vw"
-          className="h-auto w-auto max-w-[65%] max-h-[65%]"
+          className="h-auto w-auto max-w-[70%] max-h-[80%]"
           style={{
             objectFit: "contain"
           }}
