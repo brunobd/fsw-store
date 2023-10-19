@@ -8,9 +8,9 @@ interface ProductItemProps {
 
 const ProductItem = ({ product }: ProductItemProps) => {
   return (
-    <div className="flex flex-col gap-4 max-w-[156px]">
+    <div className="flex flex-col gap-4 max-w-[170px]">
       <div
-        className="relative bg-accent rounded-lg h-[170px] w-[156px] flex items-center justify-center"
+        className="relative bg-accent rounded-lg h-[170px] w-[170px] flex items-center justify-center"
       >
         {product.discountPercentage > 0 && (
           <Badge className="absolute left-2 top-2 px-2 py-[2px]">
