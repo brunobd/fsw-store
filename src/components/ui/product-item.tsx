@@ -23,7 +23,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
           height={0}
           width={0}
           sizes="100vw"
-          className="h-auto w-auto max-w-[80%] max-h-[70%]"
+          className="h-auto w-auto max-w-[65%] max-h-[65%]"
           style={{
             objectFit: "contain"
           }}
