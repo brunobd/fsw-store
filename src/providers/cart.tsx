@@ -1,7 +1,6 @@
 "use client"
 
 import { ProductWithFinalPrice } from "@/helpers/product";
-import { Product } from "@prisma/client";
 import { ReactNode, createContext, useState } from "react";
 
 export interface CartProduct extends ProductWithFinalPrice {
@@ -12,8 +11,11 @@ interface ICarContext {
   products: CartProduct[]
   total: number,
   subtotal: number,
-  discount: number
-  addProductsToCart: (product: CartProduct) => void
+  discount: number,
+  addProductsToCart: (product: CartProduct) => void,
+  decreaseProductQuantity: (productId: string) => void
+  increaseProductQuantity: (productId: string) => void
+  removeProductFromCart: (productId: string) => void
 }
 
 export const CartContext = createContext<ICarContext>({
@@ -21,7 +23,10 @@ export const CartContext = createContext<ICarContext>({
   total: 0,
   subtotal: 0,
   discount: 0,
-  addProductsToCart: () => { }
+  addProductsToCart: () => { },
+  decreaseProductQuantity: () => { },
+  increaseProductQuantity: () => { },
+  removeProductFromCart: () => {}
 })
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
@@ -32,8 +37,8 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
     const productIsAlreadyOnCart = cartProducts.some(cartProduct => cartProduct.id === product.id)
 
     if (productIsAlreadyOnCart) {
-      setCartProducts((previousState)=> previousState.map(cartProduct =>{
-        if(cartProduct.id === product.id){
+      setCartProducts((previousState) => previousState.map(cartProduct => {
+        if (cartProduct.id === product.id) {
           return {
             ...cartProduct,
             quantity: cartProduct.quantity + product.quantity
@@ -47,11 +52,51 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
 
   }
 
+  const decreaseProductQuantity = (productId: string) => {
+    setCartProducts((previousState) =>
+      previousState.map((cartProduct) => {
+        if (cartProduct.id === productId) {
+          return {
+            ...cartProduct,
+            quantity: cartProduct.quantity - 1
+          }
+        }
+        return cartProduct
+      }).filter((cartProduct) => cartProduct.quantity > 0)
+    )
+  }
+
+  const increaseProductQuantity = (productId: string) => {
+    setCartProducts((previousState) =>
+      previousState.map((cartProduct) => {
+        if (cartProduct.id === productId) {
+          return {
+            ...cartProduct,
+            quantity: cartProduct.quantity + 1
+          }
+        }
+        return cartProduct
+      })
+    )
+  }
+
+  const removeProductFromCart = (productId: string) => {
+    setCartProducts((previousState) =>
+      previousState.filter((cartProduct) => {
+        cartProduct.id !== productId
+      })
+    )
+  }
+
+
   return (
     <CartContext.Provider
       value={{
         products: cartProducts,
         addProductsToCart,
+        decreaseProductQuantity,
+        increaseProductQuantity,
+        removeProductFromCart,
         total: 0,
         subtotal: 0,
         discount: 0

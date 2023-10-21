@@ -12,6 +12,7 @@ const Cart = () => {
         <ShoppingCartIcon size={16} />
         Carrinho
       </Badge>
+      {products.length === 0 && (<p className="opacity-75">Seu carrinho está vazio.</p>)}
       <div className="flex flex-col gap-5">
       {products.map(product => (<CartItem key={product.id} product={product}/>))}
       </div>

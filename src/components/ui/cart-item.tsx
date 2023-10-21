@@ -1,7 +1,7 @@
-import { CartProduct } from "@/providers/cart"
+import { CartContext, CartProduct } from "@/providers/cart"
 import { ArrowLeftIcon, ArrowRightIcon, DeleteIcon, TrashIcon } from "lucide-react"
 import Image from "next/image"
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button } from "./button"
 
 interface CartItemProps {
@@ -9,6 +9,18 @@ interface CartItemProps {
 }
 
 const CartItem = ({ product }: CartItemProps) => {
+  const { decreaseProductQuantity, increaseProductQuantity, removeProductFromCart } = useContext(CartContext)
+
+  const handleDecreaseProductQuantityClick = () => {
+    decreaseProductQuantity(product.id)
+  }
+  const handleIncreaseProductQuantityClick = () => {
+    increaseProductQuantity(product.id)
+  }
+  const handleRemoveProductFromCartClick = () => {
+    removeProductFromCart(product.id)
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4" >
@@ -36,19 +48,19 @@ const CartItem = ({ product }: CartItemProps) => {
 
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <Button size="icon" variant="outline" className="h-8 w-8">
-              <ArrowLeftIcon size={16}  />
+            <Button size="icon" variant="outline" className="h-8 w-8" onClick={handleDecreaseProductQuantityClick}>
+              <ArrowLeftIcon size={16} />
             </Button>
             <span className="text-xs">{product.quantity}</span>
-            <Button size="icon" variant="outline" className="h-8 w-8">
+            <Button size="icon" variant="outline" className="h-8 w-8" onClick={handleIncreaseProductQuantityClick}>
               <ArrowRightIcon size={16} />
             </Button>
           </div>
         </div>
       </div>
 
-      <Button size="icon" variant="outline">
-        <TrashIcon size={16}/>
+      <Button size="icon" variant="outline" onClick={handleRemoveProductFromCartClick}>
+        <TrashIcon size={16} />
       </Button>
     </div>
   )
