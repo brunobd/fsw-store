@@ -45,12 +45,12 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
       )}
 
       <div className="flex items-center mt-4 gap-4">
-        <Button size="icon" variant="outline" onClick={handleDecreaseProductQuantityClick}>
-          <ArrowLeftIcon size={14} />
+        <Button size="icon" className="h-8 w-8" variant="outline" onClick={handleDecreaseProductQuantityClick}>
+          <ArrowLeftIcon size={16} />
         </Button>
         <span >{productQuantity}</span>
-        <Button size="icon" variant="outline" onClick={handleIncreaseProductQuantityClick}>
-          <ArrowRightIcon size={14} />
+        <Button size="icon" className="h-8 w-8" variant="outline" onClick={handleIncreaseProductQuantityClick}>
+          <ArrowRightIcon size={16} />
         </Button>
       </div>
 
