@@ -2,21 +2,17 @@
 import { Button } from "@/components/ui/button"
 import DiscountBadge from "@/components/ui/discount-badge"
 import { ProductWithFinalPrice } from "@/helpers/product"
+import { CartContext } from "@/providers/cart"
+import { Product } from "@prisma/client"
 import { ArrowLeftIcon, ArrowRightIcon, TruckIcon } from "lucide-react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 
 interface ProductInfoProps {
-  product: Pick<
-    ProductWithFinalPrice,
-    "name" |
-    "basePrice"
-    | "description"
-    | "discountPercentage"
-    | "finalPrice"
-  >
+  product: ProductWithFinalPrice
 }
-const ProductInfo = ({ product: { name, basePrice, description, finalPrice, discountPercentage } }: ProductInfoProps) => {
+const ProductInfo = ({ product }: ProductInfoProps) => {
   const [productQuantity, setProductQuantity] = useState(1)
+  const { addProductsToCart } = useContext(CartContext)
   const handleDecreaseProductQuantityClick = () => {
     setProductQuantity((previousState) => (previousState === 1 ? previousState : previousState - 1))
   }
@@ -24,19 +20,26 @@ const ProductInfo = ({ product: { name, basePrice, description, finalPrice, disc
     setProductQuantity((previousState) => previousState + 1)
   }
 
+  const handleAddProductToCartClick = () => {
+    addProductsToCart({
+      ...product,
+      quantity: productQuantity
+    })
+  }
+
   return (
     <div className="flex flex-col px-5">
-      <h2 className="text-lg">{name}</h2>
+      <h2 className="text-lg">{product.name}</h2>
       <div className="flex items-center gap-2">
-        <h1 className="text-xl font-bold" >{finalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</h1>
-        {discountPercentage > 0 && (
-        <DiscountBadge>{discountPercentage}</DiscountBadge>
+        <h1 className="text-xl font-bold" >{product.finalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</h1>
+        {product.discountPercentage > 0 && (
+          <DiscountBadge>{product.discountPercentage}</DiscountBadge>
         )}
       </div>
-      {discountPercentage > 0 && (
+      {product.discountPercentage > 0 && (
         <>
           <p className="opacity-75 text-sm">
-            De: <span className="line-through opacity-75 text-sm" >{Number(basePrice).toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</span>
+            De: <span className="line-through opacity-75 text-sm" >{Number(product.basePrice).toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</span>
           </p>
         </>
       )}
@@ -53,13 +56,13 @@ const ProductInfo = ({ product: { name, basePrice, description, finalPrice, disc
 
       <div className="flex flex-col gap-4 mt-8">
         <h3 className="font-bold">Descrição</h3>
-        <p className="text-sm opacity-60 text-justify">{description}</p>
+        <p className="text-sm opacity-60 text-justify">{product.description}</p>
       </div>
-      <Button className="mt-8 uppercase font-bold"> Adicionar ao carrinho</Button>
+      <Button onClick={handleAddProductToCartClick} className="mt-8 uppercase font-bold"> Adicionar ao carrinho</Button>
 
       <div className="bg-[#2a2a2a] flex items-center px-5 py-2 mt-5 justify-between rounded-lg">
         <div className="flex items-center gap-2">
-          <TruckIcon/>
+          <TruckIcon />
           <div className="flex flex-col">
             <p className=" font-semibold text-xs">Entrega via <span className="font-bold italic">FSPacket®</span></p>
             <p className="font-semibold text-xs text-[#8162FF]" >Envio para <span className="font-bold">todo Brasil</span></p>
