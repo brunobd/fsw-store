@@ -36,9 +36,11 @@ export const CartContext = createContext<ICarContext>({
 })
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
+
+
   const [cartProducts, setCartProducts] = useState<CartProduct[]>(
-    JSON.parse(localStorage.getItem("@fsw-store/cart-products") || "[]")
-  )
+    JSON.parse(localStorage.getItem("@fsw-store/cart-products") || "[]"))
+    
   useEffect(() => {
     localStorage.setItem("@fsw-store/cart-products", JSON.stringify(cartProducts))
   }, [cartProducts])
