@@ -1,7 +1,7 @@
 "use client"
 
 import { ProductWithFinalPrice } from "@/helpers/product";
-import { ReactNode, createContext, useMemo, useState } from "react";
+import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
 
 export interface CartProduct extends ProductWithFinalPrice {
   quantity: number
@@ -36,19 +36,25 @@ export const CartContext = createContext<ICarContext>({
 })
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cartProducts, setCartProducts] = useState<CartProduct[]>([])
+  const [cartProducts, setCartProducts] = useState<CartProduct[]>(
+    JSON.parse(localStorage.getItem("@fsw-store/cart-products") || "[]")
+  )
+  useEffect(() => {
+    localStorage.setItem("@fsw-store/cart-products", JSON.stringify(cartProducts))
+  }, [cartProducts])
+
   const cartSubtotalPrice = useMemo(() => {
     return cartProducts.reduce((acc, cartProduct) => {
-      return acc +  (cartProduct.quantity * Number(cartProduct.basePrice))
+      return acc + (cartProduct.quantity * Number(cartProduct.basePrice))
     }, 0)
   }, [cartProducts])
   const cartTotalPrice = useMemo(() => {
     return cartProducts.reduce((acc, cartProduct) => {
-      return acc + (cartProduct.quantity *Number(cartProduct.finalPrice))
+      return acc + (cartProduct.quantity * Number(cartProduct.finalPrice))
     }, 0)
   }, [cartProducts])
 
-  const cartTotalDiscount = cartTotalPrice - cartSubtotalPrice 
+  const cartTotalDiscount = cartTotalPrice - cartSubtotalPrice
 
   const addProductsToCart = (product: CartProduct) => {
 
