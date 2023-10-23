@@ -1,7 +1,7 @@
 "use client"
 
 import { ProductWithFinalPrice } from "@/helpers/product";
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useMemo, useState } from "react";
 
 export interface CartProduct extends ProductWithFinalPrice {
   quantity: number
@@ -12,6 +12,9 @@ interface ICarContext {
   total: number,
   subtotal: number,
   discount: number,
+  cartTotalPrice: number,
+  cartSubtotalPrice: number,
+  cartTotalDiscount: number,
   addProductsToCart: (product: CartProduct) => void,
   decreaseProductQuantity: (productId: string) => void
   increaseProductQuantity: (productId: string) => void
@@ -23,14 +26,29 @@ export const CartContext = createContext<ICarContext>({
   total: 0,
   subtotal: 0,
   discount: 0,
+  cartTotalPrice: 0,
+  cartSubtotalPrice: 0,
+  cartTotalDiscount: 0,
   addProductsToCart: () => { },
   decreaseProductQuantity: () => { },
   increaseProductQuantity: () => { },
-  removeProductFromCart: () => {}
+  removeProductFromCart: () => { }
 })
 
 const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([])
+  const cartSubtotalPrice = useMemo(() => {
+    return cartProducts.reduce((acc, cartProduct) => {
+      return acc +  (cartProduct.quantity * Number(cartProduct.basePrice))
+    }, 0)
+  }, [cartProducts])
+  const cartTotalPrice = useMemo(() => {
+    return cartProducts.reduce((acc, cartProduct) => {
+      return acc + (cartProduct.quantity *Number(cartProduct.finalPrice))
+    }, 0)
+  }, [cartProducts])
+
+  const cartTotalDiscount = cartTotalPrice - cartSubtotalPrice 
 
   const addProductsToCart = (product: CartProduct) => {
 
@@ -97,6 +115,9 @@ const CartProvider = ({ children }: { children: ReactNode }) => {
         decreaseProductQuantity,
         increaseProductQuantity,
         removeProductFromCart,
+        cartTotalPrice,
+        cartSubtotalPrice,
+        cartTotalDiscount,
         total: 0,
         subtotal: 0,
         discount: 0
