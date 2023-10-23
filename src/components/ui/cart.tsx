@@ -7,14 +7,14 @@ import { Separator } from "./separator"
 import { ScrollArea } from "./scroll-area"
 import { Button } from "./button"
 import { createCheckout } from "@/actions/checkout"
-import {loadStripe} from "@stripe/stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 const Cart = () => {
   const { products, cartSubtotalPrice, cartTotalDiscount, cartTotalPrice } = useContext(CartContext)
 
-  const handleFinishPurchaseClick = async() =>{
+  const handleFinishPurchaseClick = async () => {
     const checkout = await createCheckout(products)
-    
+
     const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
     stripe?.redirectToCheckout({
@@ -41,40 +41,43 @@ const Cart = () => {
           </div>
         </ScrollArea>
       </div>
+      {
+        products.length > 0 && (
 
-      <div className="flex flex-col gap-3">
-        <Separator />
+          <div className="flex flex-col gap-3">
+            <Separator />
 
-        <div className="flex items-center justify-between">
-          <p>Subtotal</p>
-          <p>{cartSubtotalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
-        </div>
+            <div className="flex items-center justify-between">
+              <p>Subtotal</p>
+              <p>{cartSubtotalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
+            </div>
 
-        <Separator />
+            <Separator />
 
-        <div className="flex items-center justify-between">
-          <p>Entrega</p>
-          <p className="uppercase">Grátis</p>
-        </div>
+            <div className="flex items-center justify-between">
+              <p>Entrega</p>
+              <p className="uppercase">Grátis</p>
+            </div>
 
-        <Separator />
+            <Separator />
 
-        <div className="flex items-center justify-between">
-          <p>Descontos</p>
-          <p>{cartTotalDiscount.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
-        </div>
+            <div className="flex items-center justify-between">
+              <p>Descontos</p>
+              <p>{cartTotalDiscount.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
+            </div>
 
-        <Separator />
+            <Separator />
 
-        <div className="flex items-center justify-between font-bold">
-          <p>Total</p>
-          <p>{cartTotalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
-        </div>
+            <div className="flex items-center justify-between font-bold">
+              <p>Total</p>
+              <p>{cartTotalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
+            </div>
 
-        <Button 
-        onClick={handleFinishPurchaseClick}
-        className="font-bold uppercase mt-7">Finalizar compra</Button>
-      </div>
+            <Button
+              onClick={handleFinishPurchaseClick}
+              className="font-bold uppercase mt-7">Finalizar compra</Button>
+          </div>
+        )}
     </div>
   )
 }
