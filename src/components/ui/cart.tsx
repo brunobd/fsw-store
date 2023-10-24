@@ -1,6 +1,6 @@
 import { ShoppingCartIcon } from "lucide-react"
 import { Badge } from "./badge"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { CartContext } from "@/providers/cart"
 import CartItem from "./cart-item"
 import { Separator } from "./separator"
@@ -10,11 +10,9 @@ import { createCheckout } from "@/actions/checkout"
 import { loadStripe } from "@stripe/stripe-js"
 import createOrder from "@/actions/order"
 import { useSession } from "next-auth/react"
-
 const Cart = () => {
   const { data } = useSession()
   const { products, cartSubtotalPrice, cartTotalDiscount, cartTotalPrice } = useContext(CartContext)
-
   const handleFinishPurchaseClick = async () => {
     if (!data?.user) {
       return

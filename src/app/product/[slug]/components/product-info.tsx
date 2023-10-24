@@ -5,13 +5,17 @@ import { ProductWithFinalPrice } from "@/helpers/product"
 import { CartContext } from "@/providers/cart"
 import { ArrowLeftIcon, ArrowRightIcon, TruckIcon } from "lucide-react"
 import { useContext, useState } from "react"
-
+import {Loader2} from 'lucide-react';
+export const Icons = {
+  spinner: Loader2,
+};
 interface ProductInfoProps {
   product: ProductWithFinalPrice
 }
 const ProductInfo = ({ product }: ProductInfoProps) => {
   const [productQuantity, setProductQuantity] = useState(1)
   const { addProductsToCart } = useContext(CartContext)
+  const [loading, setLoading] = useState<boolean>(false)
   const handleDecreaseProductQuantityClick = () => {
     setProductQuantity((previousState) => (previousState === 1 ? previousState : previousState - 1))
   }
@@ -20,10 +24,14 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   }
 
   const handleAddProductToCartClick = () => {
+    setLoading(true)
     addProductsToCart({
       ...product,
       quantity: productQuantity
     })
+    setTimeout(()=>{
+      setLoading(false);
+  }, 500);
   }
 
   return (
@@ -57,7 +65,8 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         <h3 className="font-bold">Descrição</h3>
         <p className="text-sm opacity-60 text-justify">{product.description}</p>
       </div>
-      <Button onClick={handleAddProductToCartClick} className="mt-8 uppercase font-bold"> Adicionar ao carrinho</Button>
+      <Button onClick={handleAddProductToCartClick} className="mt-8 uppercase font-bold"> 
+      {loading ? (<Icons.spinner className="h-4 w-4 animate-spin" />):"Adicionar ao carrinho"}</Button>
 
       <div className="bg-[#2a2a2a] flex items-center px-5 py-2 mt-5 justify-between rounded-lg">
         <div className="flex items-center gap-2">
