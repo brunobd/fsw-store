@@ -14,7 +14,7 @@ const OrderProductItem = ({ orderProduct }: OrderProductItemProps) => {
   const orderProductWithFinalPrice = computeProductFinalPrice(orderProduct.product)
   return (
     <div className="flex items-center gap-4">
-      <div className="bg-accent rounded-lg w-[112px] h-[104px] flex items-center justify-center">
+      <div className="bg-accent rounded-lg w-[112px] h-[96px] flex items-center justify-center">
         <Image
           src={orderProduct.product.imageUrls[0]}
           alt={orderProduct.product.name}
@@ -33,7 +33,7 @@ const OrderProductItem = ({ orderProduct }: OrderProductItemProps) => {
         <p className="text-xs">{orderProduct.product.name}</p>
 
         <div className="flex items-center w-full justify-between">
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <p className="font-bold tex-sm">{orderProductWithFinalPrice.finalPrice.toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>
             {orderProductWithFinalPrice.discountPercentage > 0 && (
               <p className="opacity-60 line-through text-xs">{Number(orderProductWithFinalPrice.basePrice).toLocaleString('pt-BR', { style: "currency", currency: "BRL" })}</p>

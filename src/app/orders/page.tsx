@@ -29,6 +29,7 @@ const OrderPage = async () => {
         <ShoppingBasketIcon size={16} />
         Meus pedidos
       </Badge>
+
       {orders.map(order => (
         <div className="flex flex-col mt-5" key={order.id}>
           <OrderItem order={order} />
