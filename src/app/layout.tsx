@@ -7,7 +7,7 @@ import Footer from "@/components/ui/footer"
 import CartProvider from "@/providers/cart"
 
 const inter = Inter({ subsets: ['latin'] })
-
+export const dynamic = 'force-dynamic' 
 export const metadata: Metadata = {
   title: 'FSW Store',
   description: 'Sua loja de periféricos',

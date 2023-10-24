@@ -38,7 +38,7 @@ const OrderItem = ({ order }: OrderItemProps) => {
         <AccordionItem value={order.id}>
           <AccordionTrigger>
             <div className="flex flex-col gap-1 text-left">
-              <p>Pedido com {order.orderProducts.length} produto(s)</p>
+              <p className="uppercase font-bold">Pedido com {order.orderProducts.length} produto(s)</p>
               <span className="text-xs opacity-60">Feito em {order.createdAt.toLocaleDateString("pt-br")}</span>
             </div>
           </AccordionTrigger>
