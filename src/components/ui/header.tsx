@@ -2,7 +2,7 @@
 import React from 'react'
 import { Card } from "./card"
 import { Button } from "./button"
-import { HomeIcon, ListOrderedIcon, LogInIcon, LogOutIcon, MenuIcon, PercentIcon, ShoppingCartIcon } from "lucide-react"
+import { HomeIcon, ListOrderedIcon, LogInIcon, LogOutIcon, MenuIcon, PercentIcon, ShoppingBasketIcon, ShoppingCartIcon } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger } from "./sheet"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar"
@@ -55,7 +55,7 @@ const Header = () => {
 
           <div className="mt-4 flex flex-col gap-2">
             {status === "unauthenticated" && (
-              <Button 
+              <Button
                 onClick={handleLoginClick}
                 variant="outline"
                 className="gap-2 w-full justify-start">
@@ -66,7 +66,7 @@ const Header = () => {
             {status === "authenticated" && (
               <Button
                 onClick={handleLogoutClick}
-                variant="outline" 
+                variant="outline"
                 className="gap-2 w-full justify-start">
                 <LogOutIcon size={16} /> Fazer logout
               </Button>
@@ -79,6 +79,18 @@ const Header = () => {
                 </Button>
               </Link>
             </SheetClose>
+
+            {status === "authenticated" && (
+              <SheetClose asChild>
+                <Link href="/orders">
+                  <Button
+                    variant="outline"
+                    className="gap-2 w-full justify-start">
+                    <ShoppingBasketIcon size={16} /> Meus pedidos
+                  </Button>
+                </Link>
+              </SheetClose>
+            )}
 
             <SheetClose asChild >
               <Link href="/offers" >
