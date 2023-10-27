@@ -30,7 +30,8 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PromoBanner src="/banner-home-01.png"
+      <p>Teste</p>
+      {/* <PromoBanner src="/banner-home-01.png"
         alt="Até 55% desconto só esse mês" />
 
       <div className="px-5">
@@ -56,7 +57,7 @@ export default async function Home() {
       <div >
         <SectionTitle>Mouses</SectionTitle>
         <ProductsList products={mouses} />
-      </div>
+      </div> */}
     </div>
   )
 }
