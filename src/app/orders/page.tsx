@@ -4,16 +4,31 @@ import { prismaClient } from "@/lib/prisma"
 import { ShoppingBasketIcon, ShoppingCartIcon } from "lucide-react"
 import { getServerSession } from "next-auth"
 import OrderItem from "./components/order-item"
+import { DefaultSession } from "next-auth";
+import { NextResponse } from "next/server"
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+}
 
 const OrderPage = async () => {
-  const user = getServerSession(authOptions)
-  if (!user) {
-    return
+  const session = await getServerSession(authOptions)
+  if (!session || !session.user) {
+    return(
+      <div className="flex h-full flex-col items-center justify-center">
+        <h2 className="font-bold">Acesso negado</h2>
+        <p className="text-sm opacity-60">Faça login para ver seus pedidos.</p>
+      </div>
+    )
   }
 
   const orders = await prismaClient.order.findMany({
     where: {
-      userId: (user as any).id
+      userId: session.user.id
     },
     include: {
       orderProducts: {
